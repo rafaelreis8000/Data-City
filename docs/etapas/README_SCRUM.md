@@ -39,11 +39,11 @@ Organizar o desenvolvimento do DataCity Analytics em quatro Sprints, distribuíd
 
 ### Sprint 4 - Visualização e entrega
 
-**Objetivo: consolidar os resultados e demonstrar a aplicação**
+**Objetivo: consolidar os resultados e demonstrar a aplicação.**
 
 - Criar pelo menos quatro gráficos;
 - Interpretar os resultados;
-- Formular três recomendações fundamentais;
+- Formular três recomendações fundamentais nos resultados;
 - Exportar as tabelas em CSV;
 - Elaborar o notebook e o relatório técnico;
 - Executar os testes finais;

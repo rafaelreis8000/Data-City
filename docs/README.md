@@ -22,7 +22,7 @@ Esta pasta reúne a documentação técnica e metodológica do projeto DataCity 
 
 Cada etapa possui sua documentação para que a leitura do projeto seja clara e objetiva.
 
-## Metologia
+## Metodologia
 
 O desenvolvimento seguirá Scrum, com backlog priorizado, planejamento das Sprints, acompanhamento do progresso, revisão dos incrementos e retrospectivas.
 

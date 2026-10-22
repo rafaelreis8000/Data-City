@@ -55,7 +55,7 @@ A aplicação será organizada nas seguintes camadas:
 
 ### Fluxo Geral
 
-Dados JSON > Validação e importação > MongoDB > Repositories > Services > Pandas e NUmPy > Indicadores e gráficos > CSV e relatório técnico.
+Dados JSON > Validação e importação > MongoDB > Repositories > Services > Pandas e NumPy > Indicadores e gráficos > CSV e relatório técnico.
 
 ## 7. Coleções do MongoDB
 
@@ -78,7 +78,7 @@ Antes da importação, os arquivos de origem deverão ser inspecionados para con
 - Documentar as regras de tratamento dos dados;
 - Não interpretar correlação como causalidade;
 
-## 9. Critérios
+## 9. Critérios de aceite
 
 - [ ] O problema estiver documentado;
 - [ ] Os requisitos funcionais e não funcionais estiverem definidos;
