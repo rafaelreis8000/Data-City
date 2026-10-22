@@ -1,12 +1,16 @@
 # DataCity Analytics
 
-## 1. SObre o Projeto
+## Acesso rápido
+
+- [Documentação](docs/README.md)
+
+## 1. Sobre o Projeto
 
 O **DataCity Analytics** é uma aplicação de análise de dados de mobilidade urbana desenvolvida para a cidade fictícia de Nova Esperança, com aproximadamente 750 mil habitantes.
 
 O projeto consiste em investigar problemas relacionados ao atraso nos transportes coletivos, juntamente com a análise da distribuição de passageiros e suas demandas, a duração de cada viagem, as ocorrências operacionais e as avaliações dos usuários.
 
-Dados sintéticos serão utilizados e mapeados no MongoDB em conjunto com Python buscando organizar, tratar, analisar e visualizar dados e informações que apoiem tomadas de decisões e planejamentos acerca do trânsito.
+Dados sintéticos serão utilizados e mapeados no MongoDB em conjunto com Python buscando organizar, tratar, analisar e visualizar dados e informações que apoiem a tomada de decisões e planejamentos acerca do trânsito.
 
 ## 2. Objetivo Geral
 
@@ -41,7 +45,7 @@ Desenvolver uma aplicação funcional integrada ao MongoDB capaz de coletar, org
 | Jupyter Notebook | Exploração documentada dos Dados |
 | Pytest | Testes Automatizados |
 
-A utilização de uma interface gráfica não faz parte do MVP, mas pode ser integrada futuramente
+A utilização de uma interface gráfica não faz parte do MVP, mas pode ser integrada futuramente.
 
 ## 5. Arquitetura da Aplicação
 
@@ -62,12 +66,12 @@ O Banco de Dados será salvo como **datacity_db** e deverá conter:
 
 - Linhas: informações sobre as linhas de transporte;
 - Veículos: informações sobre os veículos e suas capacidades;
--  Viagens: registros das viagens e suas métricas operacionais;
-- Ocorrências: reigstros de eventos associados à operação do transporte;
+- Viagens: registros das viagens e suas métricas operacionais;
+- Ocorrências: registros de eventos associados à operação do transporte;
 
 ## 7. Organização e Orientação a Objetos
 
-O código será modular, orientado a objetos e organizado em diferntes pastas para melhor visualização
+O código será modular, orientado a objetos e organizado em diferentes pastas para melhor visualização
 
 | Pasta | Finalidade |
 | -- | -- |
@@ -81,7 +85,7 @@ O código será modular, orientado a objetos e organizado em diferntes pastas pa
 
 ## 8. Metodologia de desenvolvimento
 
-O projeto será modelado seguindo a metodologia ágil Scrum, distribuindo o trabalho em quatro sprints
+O projeto será modelado seguindo a metodologia ágil Scrum, distribuindo o trabalho em quatro sprints.
 
 - Sprint 1: Diagnóstico, arquitetura, organização do projeto e configuração do ambiente;
 - Sprint 2: Modelagem documental, validação, importação e consultas no MongoDB;
@@ -90,7 +94,7 @@ O projeto será modelado seguindo a metodologia ágil Scrum, distribuindo o trab
 
 ## 9. Indicadores e questões de investigação
 
-Ao processar e analisar a base de dados no MongoDB, deve-se responder essas perguntas:
+Ao processar e analisar a base de dados no MongoDB, deve-se responder a essas perguntas:
 
 - Quais linhas e regiões apresentam maiores atrasos médios e medianos?;
 - Em quais horários ocorre maior concentração de passageiros?;
@@ -114,7 +118,7 @@ Ao final do desenvolvimento, o MVP elaborado deve possuir:
 - Procedimentos de preparação e análise dos dados;
 - Tabela analítica exportada em .CSV;
 - Notebook Jupyter documentado;
-- pelo menos quatro gráficos interpretados;
+- Pelo menos quatro gráficos interpretados;
 - Relatório técnico em PDF;
 - Diagrama atualizado da arquitetura;
 - Apresentação com demonstração funcional da aplicação;
