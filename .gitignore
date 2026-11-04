@@ -1,0 +1,16 @@
+# Ambiente virtual
+.venv/
+
+# Cache do Python
+__pycache__/
+*.py[cod]
+
+# Arquivos de ambiente
+.env
+
+# Configurações locais
+.vscode/
+
+# Arquivos temporários
+*.log
+.DS_Store
