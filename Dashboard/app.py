@@ -37,7 +37,7 @@ st.set_page_config(
 
 
 # ==========================================================
-# 4. FUNCAO PARA FORMATAR VALORES
+# 4. FORMATACAO DE VALORES
 # ==========================================================
 
 def formatar_valor(valor, casas_decimais=2):
@@ -57,21 +57,17 @@ def carregar_dados():
 
     loader = DataFrameLoader()
 
-    try:
-        dados = loader.carregar_todos()
+    dados = loader.carregar_todos()
 
-        limpador = DataCleaner()
+    limpador = DataCleaner()
 
-        dados_limpos = limpador.limpar_todos(dados)
+    dados_limpos = limpador.limpar_todos(dados)
 
-        return dados_limpos
-
-    finally:
-        loader.fechar_conexao()
+    return dados_limpos
 
 
 # ==========================================================
-# 6. CABECALHO DO DASHBOARD
+# 6. CABECALHO
 # ==========================================================
 
 st.title("🚌 DataCity Analytics")
@@ -95,10 +91,6 @@ st.divider()
 
 try:
 
-    # ------------------------------------------------------
-    # Carregamento das coleções
-    # ------------------------------------------------------
-
     dados = carregar_dados()
 
     viagens = dados["viagens"]
@@ -110,7 +102,7 @@ try:
 
 
     # ======================================================
-    # 8. FILTROS INTERATIVOS
+    # 8. FILTROS
     # ======================================================
 
     st.sidebar.title("Filtros")
@@ -119,10 +111,6 @@ try:
         "Personalize a consulta utilizando "
         "os filtros abaixo."
     )
-
-    # ------------------------------------------------------
-    # Filtro de período
-    # ------------------------------------------------------
 
     data_minima = viagens["data"].min().date()
     data_maxima = viagens["data"].max().date()
@@ -135,10 +123,6 @@ try:
         format="DD/MM/YYYY"
     )
 
-    # ------------------------------------------------------
-    # Filtro de região
-    # ------------------------------------------------------
-
     regioes_disponiveis = ["Todas"] + sorted(
         regioes["nome"].dropna().unique().tolist()
     )
@@ -147,10 +131,6 @@ try:
         "Selecione a região",
         regioes_disponiveis
     )
-
-    # ------------------------------------------------------
-    # Filtro de linha
-    # ------------------------------------------------------
 
     linhas_disponiveis = ["Todas"] + sorted(
         linhas["codigo"].dropna().unique().tolist()
@@ -168,10 +148,6 @@ try:
 
     viagens_filtradas = viagens.copy()
 
-    # ------------------------------------------------------
-    # Aplicação do filtro de período
-    # ------------------------------------------------------
-
     if len(periodo) == 2:
 
         data_inicio, data_fim = periodo
@@ -185,15 +161,7 @@ try:
 
     else:
 
-        st.sidebar.warning(
-            "Selecione uma data inicial e uma data final."
-        )
-
         viagens_filtradas = viagens_filtradas.iloc[0:0]
-
-    # ------------------------------------------------------
-    # Aplicação do filtro de região
-    # ------------------------------------------------------
 
     if regiao_selecionada != "Todas":
 
@@ -205,10 +173,6 @@ try:
         viagens_filtradas = viagens_filtradas[
             viagens_filtradas["regiao_id"] == regiao_id
         ]
-
-    # ------------------------------------------------------
-    # Aplicação do filtro de linha
-    # ------------------------------------------------------
 
     if linha_selecionada != "Todas":
 
@@ -223,83 +187,81 @@ try:
 
 
     # ======================================================
-    # 10. CALCULO DOS INDICADORES
-    # ======================================================
-
-    indicadores = analise.analisar_viagens(
-        viagens_filtradas
-    )
-
-
-    # ======================================================
-    # 11. INDICADORES GERAIS
+    # 10. INDICADORES
     # ======================================================
 
     st.subheader("Indicadores gerais")
 
-    col1, col2, col3, col4 = st.columns(4)
+    if not viagens_filtradas.empty:
 
-    col1.metric(
-        "Total de viagens",
-        f"{indicadores['total_viagens']:,}"
-    )
+        indicadores = analise.analisar_viagens(
+            viagens_filtradas
+        )
 
-    col2.metric(
-        "Viagens com atraso",
-        f"{indicadores['viagens_com_atraso']:,}"
-    )
+        col1, col2, col3, col4 = st.columns(4)
 
-    col3.metric(
-        "Atraso médio",
-        f"{formatar_valor(indicadores['atraso_medio_minutos'])} min"
-    )
+        col1.metric(
+            "Total de viagens",
+            f"{indicadores['total_viagens']:,}"
+        )
 
-    col4.metric(
-        "Avaliação média",
-        formatar_valor(indicadores["avaliacao_media"])
-    )
+        col2.metric(
+            "Viagens com atraso",
+            f"{indicadores['viagens_com_atraso']:,}"
+        )
+
+        col3.metric(
+            "Atraso médio",
+            f"{formatar_valor(indicadores['atraso_medio_minutos'])} min"
+        )
+
+        col4.metric(
+            "Avaliação média",
+            formatar_valor(indicadores["avaliacao_media"])
+        )
+
+        st.divider()
+
+        st.subheader("Análise das viagens")
+
+        col1, col2 = st.columns(2)
+
+        with col1:
+
+            st.metric(
+                "Duração média",
+                f"{formatar_valor(indicadores['duracao_media_minutos'])} min"
+            )
+
+            st.metric(
+                "Percentual de viagens atrasadas",
+                f"{formatar_valor(indicadores['percentual_atrasos'])}%"
+            )
+
+        with col2:
+
+            st.metric(
+                "Total de passageiros registrados",
+                f"{indicadores['passageiros_total']:,}"
+            )
+
+            st.metric(
+                "Média de passageiros por viagem",
+                formatar_valor(indicadores["passageiros_media"])
+            )
+
+    else:
+
+        st.info(
+            "Não existem viagens para os filtros selecionados."
+        )
+
+
+    # ======================================================
+    # 11. VIAGENS POR LINHA
+    # ======================================================
 
     st.divider()
-
-
-    # ======================================================
-    # 12. ANALISE GERAL DAS VIAGENS
-    # ======================================================
-
-    st.subheader("Análise das viagens")
-
-    col1, col2 = st.columns(2)
-
-    with col1:
-
-        st.metric(
-            "Duração média",
-            f"{formatar_valor(indicadores['duracao_media_minutos'])} min"
-        )
-
-        st.metric(
-            "Percentual de viagens atrasadas",
-            f"{formatar_valor(indicadores['percentual_atrasos'])}%"
-        )
-
-    with col2:
-
-        st.metric(
-            "Total de passageiros registrados",
-            f"{indicadores['passageiros_total']:,}"
-        )
-
-        st.metric(
-            "Média de passageiros por viagem",
-            formatar_valor(indicadores["passageiros_media"])
-        )
-
-    st.divider()
-
-
-    # ======================================================
-    # 13. VIAGENS POR LINHA
-    # ======================================================
 
     st.subheader("Viagens por linha")
 
@@ -322,22 +284,19 @@ try:
 
     else:
 
-        st.info(
-            "Não existem viagens para os filtros selecionados."
-        )
+        st.info("Não há dados para gerar o gráfico.")
+
+
+    # ======================================================
+    # 12. TABELA DETALHADA
+    # ======================================================
 
     st.divider()
-
-
-    # ======================================================
-    # 14. TABELA DETALHADA DE VIAGENS
-    # ======================================================
 
     st.subheader("Detalhamento das viagens")
 
     if not viagens_filtradas.empty:
 
-        # Relaciona as viagens com os dados das linhas
         viagens_detalhadas = viagens_filtradas.merge(
             linhas[["_id", "codigo", "nome"]],
             left_on="linha_id",
@@ -346,7 +305,6 @@ try:
             suffixes=("", "_linha")
         )
 
-        # Seleciona as colunas que serão exibidas
         colunas_exibidas = [
             "data",
             "hora_saida",
@@ -364,7 +322,6 @@ try:
             colunas_exibidas
         ].copy()
 
-        # Renomeia as colunas
         tabela = tabela.rename(columns={
             "data": "Data",
             "hora_saida": "Saída",
@@ -378,12 +335,10 @@ try:
             "avaliacao_media": "Avaliação"
         })
 
-        # Formata a data
         tabela["Data"] = tabela["Data"].dt.strftime(
             "%d/%m/%Y"
         )
 
-        # Controle da quantidade de registros exibidos
         quantidade_exibida = st.number_input(
             "Quantidade de viagens para exibir",
             min_value=10,
@@ -399,33 +354,22 @@ try:
         )
 
         st.caption(
-            f"Total de viagens encontradas: "
-            f"{len(tabela):,} | "
-            f"Registros exibidos: "
-            f"{min(len(tabela), quantidade_exibida):,}"
+            f"Total de viagens encontradas: {len(tabela):,}"
         )
 
-    else:
 
-        st.info(
-            "Não existem viagens para os filtros selecionados."
-        )
+    # ======================================================
+    # 13. ANALISE DE OCORRENCIAS
+    # ======================================================
 
     st.divider()
 
-
-    # ======================================================
-    # 15. ANALISE DAS OCORRENCIAS
-    # ======================================================
-
     st.subheader("Análise das ocorrências")
 
-    # Identifica as viagens que passaram pelos filtros
     ids_viagens_filtradas = set(
         viagens_filtradas["_id"]
     )
 
-    # Busca ocorrências relacionadas às viagens filtradas
     ocorrencias_filtradas = ocorrencias[
         ocorrencias["viagem_id"].isin(
             ids_viagens_filtradas
@@ -433,10 +377,6 @@ try:
     ]
 
     col1, col2 = st.columns(2)
-
-    # ------------------------------------------------------
-    # Ocorrências por tipo
-    # ------------------------------------------------------
 
     with col1:
 
@@ -459,18 +399,11 @@ try:
 
         else:
 
-            st.info(
-                "Nenhuma ocorrência encontrada "
-                "para os filtros selecionados."
-            )
-
-    # ------------------------------------------------------
-    # Ocorrências por nível de impacto
-    # ------------------------------------------------------
+            st.info("Nenhuma ocorrência encontrada.")
 
     with col2:
 
-        st.markdown("**Ocorrências por nível de impacto**")
+        st.markdown("**Ocorrências por impacto**")
 
         if not ocorrencias_filtradas.empty:
 
@@ -489,17 +422,14 @@ try:
 
         else:
 
-            st.info(
-                "Nenhuma ocorrência encontrada "
-                "para os filtros selecionados."
-            )
+            st.info("Nenhuma ocorrência encontrada.")
+
+
+    # ======================================================
+    # 14. RESUMO
+    # ======================================================
 
     st.divider()
-
-
-    # ======================================================
-    # 16. RESUMO DA CONSULTA
-    # ======================================================
 
     st.subheader("Resumo da consulta")
 
@@ -527,7 +457,7 @@ try:
 
 
     # ======================================================
-    # 17. RODAPE
+    # 15. RODAPE
     # ======================================================
 
     st.divider()
@@ -537,10 +467,6 @@ try:
         "Dados sintéticos para fins de análise."
     )
 
-
-# ==========================================================
-# 18. TRATAMENTO DE ERROS
-# ==========================================================
 
 except Exception as erro:
 
